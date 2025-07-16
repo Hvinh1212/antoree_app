@@ -11,20 +11,17 @@ export default function Home() {
     const [favorites, setFavorites] = useState(() => {
         return JSON.parse(localStorage.getItem("favorites") || "[]");
     });
-    const [viewed, setViewed] = useState(() => {
-        return JSON.parse(localStorage.getItem("viewed") || "[]");
-    });
+
     const toast = useToast();
 
     const handleDetail = (product) => {
         setModalProduct(product);
         setModalOpen(true);
-        setViewed((prev) => {
-            if (prev.includes(product.id)) return prev;
+        const prev = JSON.parse(localStorage.getItem("viewed") || "[]");
+        if (!prev.includes(product.id)) {
             const updated = [...prev, product.id];
             localStorage.setItem("viewed", JSON.stringify(updated));
-            return updated;
-        });
+        }
     };
     const handleFavorite = (product) => {
         setFavorites((prev) => {

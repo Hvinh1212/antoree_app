@@ -8,7 +8,6 @@ export default function Wishlist() {
     const [favorites, setFavorites] = useState([]);
     const [modalProduct, setModalProduct] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
-    const [viewed, setViewed] = useState([]);
     const toast = useToast();
 
     useEffect(() => {
@@ -16,24 +15,14 @@ export default function Wishlist() {
         setFavorites(fav);
     }, []);
 
-
-
-    useEffect(() => {
-        const v = JSON.parse(localStorage.getItem("viewed") || "[]");
-        setViewed(v);
-    }, []);
-
     const handleDetail = (product) => {
         setModalProduct(product);
         setModalOpen(true);
-        // Cập nhật lịch sử xem
-        setViewed((prev) => {
-            if (!prev) prev = [];
-            if (prev.includes(product.id)) return prev;
+        const prev = JSON.parse(localStorage.getItem("viewed") || "[]");
+        if (!prev.includes(product.id)) {
             const updated = [...prev, product.id];
             localStorage.setItem("viewed", JSON.stringify(updated));
-            return updated;
-        });
+        }
     };
     const handleFavorite = (product) => {
         setFavorites((prev) => {
