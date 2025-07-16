@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import Hero from '../../components/Hero';
 import { Link } from 'react-router-dom';
 import products from '../../components/mockProducts';
 import ProductList from '../../components/ProductList';
 import ProductDetailModal from '../../components/ProductDetailModal';
-import SuggestionButton from '../../components/SuggestionButton';
-import { getSuggestions } from '../../components/mockApi';
 import { useToast } from '../../components/Toast';
 
 export default function Home() {
@@ -17,9 +14,6 @@ export default function Home() {
     const [viewed, setViewed] = useState(() => {
         return JSON.parse(localStorage.getItem("viewed") || "[]");
     });
-    const [suggestions, setSuggestions] = useState([]);
-    const [loadingSuggest, setLoadingSuggest] = useState(false);
-    const [errorSuggest, setErrorSuggest] = useState("");
     const toast = useToast();
 
     const handleDetail = (product) => {
@@ -42,19 +36,7 @@ export default function Home() {
             return updated;
         });
     };
-    const handleSuggest = async () => {
-        setLoadingSuggest(true);
-        setErrorSuggest("");
-        try {
-            const res = await getSuggestions("user1", viewed, favorites);
-            setSuggestions(res);
-        } catch (err) {
-            setErrorSuggest(err.message);
-            setSuggestions([]);
-        } finally {
-            setLoadingSuggest(false);
-        }
-    };
+
 
     return (
         <div>
